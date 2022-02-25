@@ -44,7 +44,7 @@ public class ClientHandler implements Runnable{
                 if (!clientHandler.clientUserName.equals(clientUserName)) {
                     clientHandler.bufferedWriter.write(messageToSend);
                     clientHandler.bufferedWriter.newLine();
-                    clientHandler.bufferedWriter.flust();
+                    clientHandler.bufferedWriter.flush();
                 }
             } catch (IOException e) {
                 closeEverything(socket, bufferedReader, bufferedWriter);
@@ -57,14 +57,15 @@ public class ClientHandler implements Runnable{
         broadcastMessage("SERVER: " + clientUserName + " has left the chat");
     }
 
-    public void closeEverything(socket, bufferedReader, bufferedWriter) {
+    public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         removeClientHandler();
 
         try {
             if (bufferedReader != null) bufferedReader.close();
             if (bufferedWriter != null) bufferedWriter.close();
-            if (socket != null) socket.close;
+            if (socket != null) socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
 }
